@@ -14,5 +14,42 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     return;
   }
 
-  chrome.tabs.sendMessage(tab.id, { type: "MARK_POST_AS_READ" });
+  const sendMessage = () => {
+    chrome.tabs.sendMessage(tab.id, { type: "MARK_POST_AS_READ" }, () => {
+      if (chrome.runtime.lastError) {
+        return;
+      }
+    });
+  };
+
+  chrome.tabs.sendMessage(tab.id, { type: "MARK_POST_AS_READ" }, () => {
+    if (!chrome.runtime.lastError) {
+      return;
+    }
+
+    chrome.scripting.executeScript(
+      {
+        target: { tabId: tab.id },
+        files: ["content.js"]
+      },
+      () => {
+        if (chrome.runtime.lastError) {
+          return;
+        }
+
+        chrome.scripting.insertCSS(
+          {
+            target: { tabId: tab.id },
+            files: ["styles.css"]
+          },
+          () => {
+            if (chrome.runtime.lastError) {
+              return;
+            }
+            sendMessage();
+          }
+        );
+      }
+    );
+  });
 });
