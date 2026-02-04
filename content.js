@@ -55,10 +55,24 @@
 
     article.dataset.readMarkerApplied = "true";
     article.classList.add("x-read-marker");
+    article.style.outline = "3px solid #1d9bf0";
+    article.style.outlineOffset = "4px";
+    article.style.position = "relative";
 
     const badge = document.createElement("span");
     badge.className = "x-read-marker__badge";
     badge.textContent = "閲覧済み";
+    badge.style.position = "absolute";
+    badge.style.top = "8px";
+    badge.style.right = "8px";
+    badge.style.background = "#1d9bf0";
+    badge.style.color = "#fff";
+    badge.style.fontSize = "12px";
+    badge.style.fontWeight = "700";
+    badge.style.padding = "4px 8px";
+    badge.style.borderRadius = "999px";
+    badge.style.zIndex = "10";
+    badge.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.25)";
     article.appendChild(badge);
   };
 
