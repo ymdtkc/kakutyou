@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "X 閲覧済みマーカー",
+  "description": "X (旧Twitter) のポストに閲覧済みの強調枠とマークを付けます。",
+  "version": "1.0.0",
+  "permissions": ["contextMenus", "activeTab", "scripting"],
+  "host_permissions": ["https://x.com/*", "https://twitter.com/*"],
+  "background": {
+    "service_worker": "service_worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ]
+}
