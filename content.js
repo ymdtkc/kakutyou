@@ -1,3 +1,9 @@
+if (window.__xReadMarkerInitialized) {
+  // Prevent double-injection errors when the script is re-inserted.
+  return;
+}
+window.__xReadMarkerInitialized = true;
+
 let lastContextTarget = null;
 let lastContextPosition = null;
 
