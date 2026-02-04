@@ -1,7 +1,9 @@
 let lastContextTarget = null;
+let lastContextPosition = null;
 
 const storeContextTarget = (event) => {
   lastContextTarget = event.target;
+  lastContextPosition = { x: event.clientX, y: event.clientY };
 };
 
 document.addEventListener("contextmenu", storeContextTarget, true);
@@ -10,7 +12,29 @@ const findPostElement = (node) => {
   if (!node) {
     return null;
   }
-  return node.closest("article");
+  return node.closest?.("article") ?? null;
+};
+
+const findPostElementFromEvent = () => {
+  if (lastContextTarget) {
+    const fromTarget = findPostElement(lastContextTarget);
+    if (fromTarget) {
+      return fromTarget;
+    }
+  }
+
+  if (lastContextPosition) {
+    const elementAtPoint = document.elementFromPoint(
+      lastContextPosition.x,
+      lastContextPosition.y
+    );
+    const fromPoint = findPostElement(elementAtPoint);
+    if (fromPoint) {
+      return fromPoint;
+    }
+  }
+
+  return null;
 };
 
 const markPost = (article) => {
@@ -36,6 +60,6 @@ chrome.runtime.onMessage.addListener((message) => {
     return;
   }
 
-  const article = findPostElement(lastContextTarget);
+  const article = findPostElementFromEvent();
   markPost(article);
 });
